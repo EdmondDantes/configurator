@@ -7,6 +7,6 @@ class ConfigMain                    extends ConfigIni
 {
     public function __construct(string $appDir)
     {
-        parent::__construct($appDir . '/config/main.ini');
+        parent::__construct($appDir . '/main.ini');
     }
 }

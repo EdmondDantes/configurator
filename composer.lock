@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2503c48b70274358f539b08d1c0e1520",
+    "content-hash": "468930c143a45fa0b692d0bf7fd105f7",
     "packages": [
         {
             "name": "ifcastle/di",
@@ -147,6 +147,98 @@
                 "source": "https://github.com/EdmondDantes/os-utilities/tree/v0.5.0"
             },
             "time": "2024-07-30T12:32:03+00:00"
+        },
+        {
+            "name": "ifcastle/service-manager",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/service-manager.git",
+                "reference": "47be8d74d3898701eea4411745cf8e8c39fa6d1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/47be8d74d3898701eea4411745cf8e8c39fa6d1c",
+                "reference": "47be8d74d3898701eea4411745cf8e8c39fa6d1c",
+                "shasum": ""
+            },
+            "require": {
+                "ifcastle/di": "^0.5.0",
+                "ifcastle/exceptions": "^5.0",
+                "ifcastle/type-definitions": "^0.5.0"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2.1",
+                "friendsofphp/php-cs-fixer": "^3.60",
+                "phpunit/phpunit": "^11.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\ServiceManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library that allows organizing code according to the Services pattern.",
+            "keywords": [
+                "services"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/service-manager/issues",
+                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.5.0"
+            },
+            "time": "2024-07-29T06:27:09+00:00"
+        },
+        {
+            "name": "ifcastle/type-definitions",
+            "version": "v0.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/type-definitions.git",
+                "reference": "2b46613de05594cc0a5d53534abad4d62bbec46c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/type-definitions/zipball/2b46613de05594cc0a5d53534abad4d62bbec46c",
+                "reference": "2b46613de05594cc0a5d53534abad4d62bbec46c",
+                "shasum": ""
+            },
+            "require": {
+                "ifcastle/exceptions": "^5.0"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2.1",
+                "friendsofphp/php-cs-fixer": "^3.60",
+                "phpunit/phpunit": "^11.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\TypeDefinitions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Library for defining data types at the business logic layer. Data hydration and serialization based on type definitions.",
+            "keywords": [
+                "compilation",
+                "data",
+                "definitions",
+                "hydration",
+                "serialization",
+                "types",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/type-definitions/issues",
+                "source": "https://github.com/EdmondDantes/type-definitions/tree/v0.5.4"
+            },
+            "time": "2024-07-28T07:42:37+00:00"
         }
     ],
     "packages-dev": [
