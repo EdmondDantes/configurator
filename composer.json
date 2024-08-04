@@ -1,0 +1,25 @@
+{
+    "name": "ifcastle/configurator-ini",
+    "description": "Configugator component.",
+    "type": "ifcastle-component",
+    "license": "MIT",
+    "keywords": ["ifcastle"],
+    "autoload": {
+        "psr-4": {
+            "IfCastle\\Configurator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IfCastle\\Configurator\\": "./tests"
+        }
+    },
+    "require": {
+        "ifcastle/di": "^0.5.4",
+        "ifcastle/os-utilities": "^0.5.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.60",
+        "amphp/php-cs-fixer-config": "^2.1"
+    }
+}
