@@ -4,20 +4,115 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "468930c143a45fa0b692d0bf7fd105f7",
+    "content-hash": "17a3b870f1e1e8434a438046cfa265cc",
     "packages": [
         {
-            "name": "ifcastle/di",
-            "version": "v0.5.4",
+            "name": "ifcastle/application",
+            "version": "v0.5.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/EdmondDantes/di.git",
-                "reference": "7187bdd379c8b7c08b4933996ee4c549a951a07f"
+                "url": "https://github.com/EdmondDantes/application.git",
+                "reference": "6e2eb8d24a8862c1c3a0112da82f27ba199636fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/di/zipball/7187bdd379c8b7c08b4933996ee4c549a951a07f",
-                "reference": "7187bdd379c8b7c08b4933996ee4c549a951a07f",
+                "url": "https://api.github.com/repos/EdmondDantes/application/zipball/6e2eb8d24a8862c1c3a0112da82f27ba199636fb",
+                "reference": "6e2eb8d24a8862c1c3a0112da82f27ba199636fb",
+                "shasum": ""
+            },
+            "require": {
+                "ifcastle/design-patterns": "^0.1.0",
+                "ifcastle/di": "^0.5.2",
+                "ifcastle/os-utilities": "^0.5.0",
+                "ifcastle/service-manager": "^0.5.3",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2.1",
+                "friendsofphp/php-cs-fixer": "^3.60"
+            },
+            "bin": [
+                "if-bootloader"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\Application\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A set of interfaces for the \"Application\" pattern.",
+            "keywords": [
+                "application",
+                "interfaces",
+                "patterns"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/application/issues",
+                "source": "https://github.com/EdmondDantes/application/tree/v0.5.7"
+            },
+            "time": "2024-08-09T09:38:36+00:00"
+        },
+        {
+            "name": "ifcastle/design-patterns",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/design-patterns.git",
+                "reference": "282d88daeb5ace74c93cc059915006621401226e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/design-patterns/zipball/282d88daeb5ace74c93cc059915006621401226e",
+                "reference": "282d88daeb5ace74c93cc059915006621401226e",
+                "shasum": ""
+            },
+            "require": {
+                "ifcastle/di": "^0.5.2",
+                "ifcastle/exceptions": "^5.0"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2.1",
+                "friendsofphp/php-cs-fixer": "^3.60",
+                "phpunit/phpunit": "^11.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\DesignPatterns\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library of common design patterns for building stateful server applications.",
+            "keywords": [
+                "design-patterns",
+                "server",
+                "stateful"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/design-patterns/issues",
+                "source": "https://github.com/EdmondDantes/design-patterns/tree/v0.1.2"
+            },
+            "time": "2024-08-08T08:19:58+00:00"
+        },
+        {
+            "name": "ifcastle/di",
+            "version": "v0.5.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/di.git",
+                "reference": "ed726dc6c9864164ab5b2b27c9babec8df4954d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/di/zipball/ed726dc6c9864164ab5b2b27c9babec8df4954d4",
+                "reference": "ed726dc6c9864164ab5b2b27c9babec8df4954d4",
                 "shasum": ""
             },
             "require": {
@@ -54,9 +149,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/di/issues",
-                "source": "https://github.com/EdmondDantes/di/tree/v0.5.4"
+                "source": "https://github.com/EdmondDantes/di/tree/v0.5.8"
             },
-            "time": "2024-07-31T14:04:15+00:00"
+            "time": "2024-08-08T07:24:30+00:00"
         },
         {
             "name": "ifcastle/exceptions",
@@ -150,16 +245,16 @@
         },
         {
             "name": "ifcastle/service-manager",
-            "version": "v0.5.0",
+            "version": "v0.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/service-manager.git",
-                "reference": "47be8d74d3898701eea4411745cf8e8c39fa6d1c"
+                "reference": "f951a0addbde322ceac74fdf3cfba1ff9e28c301"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/47be8d74d3898701eea4411745cf8e8c39fa6d1c",
-                "reference": "47be8d74d3898701eea4411745cf8e8c39fa6d1c",
+                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/f951a0addbde322ceac74fdf3cfba1ff9e28c301",
+                "reference": "f951a0addbde322ceac74fdf3cfba1ff9e28c301",
                 "shasum": ""
             },
             "require": {
@@ -188,22 +283,22 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/service-manager/issues",
-                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.5.0"
+                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.5.5"
             },
-            "time": "2024-07-29T06:27:09+00:00"
+            "time": "2024-08-07T16:39:08+00:00"
         },
         {
             "name": "ifcastle/type-definitions",
-            "version": "v0.5.4",
+            "version": "v0.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/type-definitions.git",
-                "reference": "2b46613de05594cc0a5d53534abad4d62bbec46c"
+                "reference": "40f59776fe0604f6c46aea96fe269f47a55ff862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/type-definitions/zipball/2b46613de05594cc0a5d53534abad4d62bbec46c",
-                "reference": "2b46613de05594cc0a5d53534abad4d62bbec46c",
+                "url": "https://api.github.com/repos/EdmondDantes/type-definitions/zipball/40f59776fe0604f6c46aea96fe269f47a55ff862",
+                "reference": "40f59776fe0604f6c46aea96fe269f47a55ff862",
                 "shasum": ""
             },
             "require": {
@@ -236,9 +331,59 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/type-definitions/issues",
-                "source": "https://github.com/EdmondDantes/type-definitions/tree/v0.5.4"
+                "source": "https://github.com/EdmondDantes/type-definitions/tree/v0.5.6"
             },
-            "time": "2024-07-28T07:42:37+00:00"
+            "time": "2024-08-05T12:16:03+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/3.0.0"
+            },
+            "time": "2021-07-14T16:46:02+00:00"
         }
     ],
     "packages-dev": [
@@ -696,16 +841,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.61.1",
+            "version": "v3.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "94a87189f55814e6cabca2d9a33b06de384a2ab8"
+                "reference": "627692f794d35c43483f34b01d94740df2a73507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/94a87189f55814e6cabca2d9a33b06de384a2ab8",
-                "reference": "94a87189f55814e6cabca2d9a33b06de384a2ab8",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/627692f794d35c43483f34b01d94740df2a73507",
+                "reference": "627692f794d35c43483f34b01d94740df2a73507",
                 "shasum": ""
             },
             "require": {
@@ -787,7 +932,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.61.1"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.62.0"
             },
             "funding": [
                 {
@@ -795,7 +940,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-31T14:33:15+00:00"
+            "time": "2024-08-07T17:03:09+00:00"
         },
         {
             "name": "psr/container",
@@ -899,56 +1044,6 @@
                 "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
             },
             "time": "2019-01-08T18:20:26+00:00"
-        },
-        {
-            "name": "psr/log",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/log.git",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Log\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for logging libraries",
-            "homepage": "https://github.com/php-fig/log",
-            "keywords": [
-                "log",
-                "psr",
-                "psr-3"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.0"
-            },
-            "time": "2021-07-14T16:46:02+00:00"
         },
         {
             "name": "react/cache",
