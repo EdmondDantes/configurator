@@ -33,7 +33,7 @@ class ServiceConfig                 extends ConfigIni
             // If any $scopesIncluded item is in $scopes, then add the service to $servicesConfig
             // or if any $scopesExcluded item is in $scopes, then skip the service
             if(count(array_intersect($config['scopes'] ?? [], $scopes)) > 0
-            || count(array_intersect($config['scopesExcluded'] ?? [], $scopes)) === 0) {
+            && count(array_intersect($config['scopesExcluded'] ?? [], $scopes)) === 0) {
                 $servicesConfig[$service] = $config;
             }
         }
