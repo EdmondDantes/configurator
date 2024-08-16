@@ -29,7 +29,7 @@ final class ConfigApplication       extends ConfigIni
         $bootloaderExecutor->getBootloaderContext()->getSystemEnvironmentBootBuilder()
             ->bindObject(
                 [RepositoryReaderInterface::class, RepositoryReaderByScopeInterface::class],
-                new ServiceConfig($this->file)
+                new ServiceConfig($bootloaderExecutor->getBootloaderContext()->getApplicationDirectory())
             );
     }
 }
