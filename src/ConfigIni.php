@@ -33,7 +33,9 @@ class ConfigIni                     implements ConfigInterface
             throw new FileIsNotExistException($this->file);
         }
         
-        $data                       = Safe::execute(fn() => parse_ini_file($this->file, true));
+        $data                       = Safe::execute(fn() => parse_ini_file(
+            $this->file, true, INI_SCANNER_TYPED)
+        );
         
         if($data === false) {
             throw new RuntimeException('Error occurred while parse ini file: ' . $this->file);
