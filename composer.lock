@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "516fac330365cd540730cec6903b0da3",
+    "content-hash": "416580f64785c8030ff9e3f9a86e8c99",
     "packages": [
         {
             "name": "ifcastle/application",
-            "version": "v0.6.5",
+            "version": "v0.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/application.git",
-                "reference": "a41f1d33d48957cce1722d592c36c2a00a6ea3f2"
+                "reference": "a86880a07b7a7ea7774770f7a13d4e90876e780b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/application/zipball/a41f1d33d48957cce1722d592c36c2a00a6ea3f2",
-                "reference": "a41f1d33d48957cce1722d592c36c2a00a6ea3f2",
+                "url": "https://api.github.com/repos/EdmondDantes/application/zipball/a86880a07b7a7ea7774770f7a13d4e90876e780b",
+                "reference": "a86880a07b7a7ea7774770f7a13d4e90876e780b",
                 "shasum": ""
             },
             "require": {
                 "ifcastle/design-patterns": "^0.2.20",
-                "ifcastle/di": "^0.6.0",
+                "ifcastle/di": "^0.6.7",
                 "ifcastle/os-utilities": "^0.5.0",
                 "ifcastle/service-manager": "^0.5.7",
                 "psr/log": "^3.0"
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/application/issues",
-                "source": "https://github.com/EdmondDantes/application/tree/v0.6.5"
+                "source": "https://github.com/EdmondDantes/application/tree/v0.6.6"
             },
-            "time": "2024-09-14T15:16:29+00:00"
+            "time": "2024-10-09T07:11:51+00:00"
         },
         {
             "name": "ifcastle/design-patterns",
