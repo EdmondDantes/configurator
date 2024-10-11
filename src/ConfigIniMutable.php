@@ -19,7 +19,7 @@ class ConfigIniMutable              extends ConfigIni
         parent::__construct($file);
     }
     
-    protected function save(): void
+    public function save(): void
     {
         $this->throwReadOnly();
         
