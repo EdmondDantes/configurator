@@ -70,6 +70,8 @@ class ConfigIni                     implements ConfigInterface
     
     public function find(string...$path): mixed
     {
+        $this->load();
+        
         $current                    = $this->data;
         
         while ($path !== []) {
