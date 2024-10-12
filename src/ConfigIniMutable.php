@@ -46,20 +46,30 @@ class ConfigIniMutable              extends ConfigIni
         };
         
         $result                     = [];
-        
-        if($parentKey !== '') {
-            $result[]               = '';
-            $result[]               = ';' . str_repeat('-', 40);
-            $result[]               = '[' . $parentKey . ']';
-        }
+        $sections                   = [];
         
         // 1. Check if any value is a nested array
         foreach ($data as $key => $value) {
             if(is_array($value) && $isNestedArray($value)) {
-                $result             = array_merge($result, $this->build($value, $parentKey . $key . '.'));
+                $sections           = array_merge($sections, $this->build($value, $parentKey !== '' ? $parentKey .'.'. $key : $key));
+            } elseif (is_array($value) && array_is_list($value)) {
+                foreach ($value as $v) {
+                    $result[]       = $this->formatKeyValue($key . '[]', $v);
+                }
+            } elseif (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $result[]       = $this->formatKeyValue($key . '['. $k.']', $v);
+                }
             } else {
                 $result[]           = $this->formatKeyValue($key, $value);
             }
+        }
+        
+        $result                     = array_merge($result, $sections);
+        
+        if($parentKey !== '' && $result !== []) {
+            array_unshift($result, '[' . $parentKey . ']');
+            array_unshift($result, '', ';' . str_repeat('-', 40));
         }
         
         return $result;
@@ -93,9 +103,22 @@ class ConfigIniMutable              extends ConfigIni
         $this->throwReadOnly();
         $this->load();
         
-        $this->wasModified          = true;
+        $path                       = explode('.', $node);
         
-        $this->data[$node]          = $value;
+        $current                    = &$this->data;
+        
+        do {
+            $key                    = array_shift($path);
+            
+            if(!array_key_exists($key, $current) || !is_array($current[$key])) {
+                $current[$key]      = [];
+            }
+            
+            $current                = &$current[$key];
+        } while ($path !== []);
+        
+        $this->wasModified          = true;
+        $current                    = $value;
         
         return $this;
     }
@@ -111,6 +134,20 @@ class ConfigIniMutable              extends ConfigIni
     {
         $this->throwReadOnly();
         $this->load();
+        
+        $path                       = explode('.', $node);
+        
+        $current                    = &$this->data;
+        
+        do {
+            $key                    = array_shift($path);
+            
+            if(!array_key_exists($key, $current) || !is_array($current[$key])) {
+                $current[$key]      = [];
+            }
+            
+            $current                = &$current[$key];
+        } while ($path !== []);
         
         $this->wasModified          = true;
         
