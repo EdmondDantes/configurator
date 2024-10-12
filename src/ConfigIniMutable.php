@@ -24,6 +24,7 @@ class ConfigIniMutable              extends ConfigIni
         $this->throwReadOnly();
         
         $content                    = implode(PHP_EOL, $this->build($this->data));
+        $content                    = $this->afterBuild($content);
         $result                     = Safe::execute(fn() => file_put_contents($this->file, $content));
         
         if(false === $result) {
@@ -31,6 +32,11 @@ class ConfigIniMutable              extends ConfigIni
         }
         
         $this->wasModified          = false;
+    }
+    
+    protected function afterBuild(string $content): string
+    {
+        return $content;
     }
     
     protected function build(array $data, string $parentKey = ''): array
