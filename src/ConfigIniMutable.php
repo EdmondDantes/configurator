@@ -181,13 +181,23 @@ class ConfigIniMutable              extends ConfigIni
         $this->throwReadOnly($node);
         $this->load();
         
+        $path                       = explode('.', $node);
+        
+        $current                    = &$this->data;
+        
+        do {
+            $key                    = array_shift($path);
+            
+            if(!array_key_exists($key, $current) || !is_array($current[$key])) {
+                $current[$key]      = [];
+            }
+            
+            $current                = &$current[$key];
+        } while ($path !== []);
+        
         $this->wasModified          = true;
         
-        if(array_key_exists($node, $this->data) && is_array($this->data[$node])) {
-            $this->data[$node]      = array_merge($this->data[$node], $config);
-        } else {
-            $this->data[$node]      = $config;
-        }
+        $current                    = array_merge($current, $config);
         
         return $this;
     }
