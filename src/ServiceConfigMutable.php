@@ -75,6 +75,12 @@ class ServiceConfigMutable          extends ConfigIniMutable
         $this->mergeSection($serviceName, ['scopes' => $scopes]);
     }
     
+    #[\Override]
+    public function saveRepository(): void
+    {
+        $this->save();
+    }
+    
     protected function afterBuild(string $content): string
     {
         $at                         = date('Y-m-d H:i:s');
