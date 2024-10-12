@@ -14,8 +14,8 @@ class ServiceConfigMutable          extends ConfigIniMutable
     #[\Override]
     public function addServiceConfig(string $serviceName, array $serviceConfig, array $scopes = []): void
     {
-        if(array_key_exists('is_active', $serviceConfig) === false) {
-            $serviceConfig['is_active'] = false;
+        if(array_key_exists('isActive', $serviceConfig) === false) {
+            $serviceConfig['isActive'] = false;
         }
         
         if(array_key_exists('scopes', $serviceConfig) === false) {
