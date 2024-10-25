@@ -4,26 +4,29 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c308a6bd5a8eddc0800f6c02fbe6e5e",
+    "content-hash": "9f8283c184d1f8f33d434479082a4f81",
     "packages": [
         {
             "name": "ifcastle/application",
-            "version": "v0.6.14",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/application.git",
-                "reference": "5d52a17ef81f87304ba389a0ac54761bc570640f"
+                "reference": "c8b2d44430ced2d786faf4b0146a312e8bc1aad1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/application/zipball/5d52a17ef81f87304ba389a0ac54761bc570640f",
-                "reference": "5d52a17ef81f87304ba389a0ac54761bc570640f",
+                "url": "https://api.github.com/repos/EdmondDantes/application/zipball/c8b2d44430ced2d786faf4b0146a312e8bc1aad1",
+                "reference": "c8b2d44430ced2d786faf4b0146a312e8bc1aad1",
                 "shasum": ""
             },
             "require": {
+                "ifcastle/async-contracts": "^0.5.0",
                 "ifcastle/design-patterns": "^0.2.20",
                 "ifcastle/di": "^0.6.7",
+                "ifcastle/exceptions": "^5.0",
                 "ifcastle/os-utilities": "^0.5.0",
+                "ifcastle/protocol-contracts": "^0.5.0",
                 "ifcastle/service-manager": "^0.5.7",
                 "psr/log": "^3.0"
             },
@@ -50,22 +53,57 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/application/issues",
-                "source": "https://github.com/EdmondDantes/application/tree/v0.6.14"
+                "source": "https://github.com/EdmondDantes/application/tree/v0.7.1"
             },
-            "time": "2024-10-12T12:27:37+00:00"
+            "time": "2024-10-25T07:19:39+00:00"
         },
         {
-            "name": "ifcastle/design-patterns",
-            "version": "v0.2.21",
+            "name": "ifcastle/async-contracts",
+            "version": "v0.5.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/EdmondDantes/design-patterns.git",
-                "reference": "14753ed26da0acd8c63e9991c316750a930d3be9"
+                "url": "https://github.com/EdmondDantes/async-contracts.git",
+                "reference": "6c805d33dfad69e844271a7e15501bd8fc255cc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/design-patterns/zipball/14753ed26da0acd8c63e9991c316750a930d3be9",
-                "reference": "14753ed26da0acd8c63e9991c316750a930d3be9",
+                "url": "https://api.github.com/repos/EdmondDantes/async-contracts/zipball/6c805d33dfad69e844271a7e15501bd8fc255cc4",
+                "reference": "6c805d33dfad69e844271a7e15501bd8fc255cc4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\Async\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Async contracts.",
+            "keywords": [
+                "async",
+                "contracts"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/async-contracts/issues",
+                "source": "https://github.com/EdmondDantes/async-contracts/tree/v0.5.6"
+            },
+            "time": "2024-10-23T07:06:32+00:00"
+        },
+        {
+            "name": "ifcastle/design-patterns",
+            "version": "v0.2.28",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/design-patterns.git",
+                "reference": "09c0cc067839bb2180074edfd5c12fa40236d837"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/design-patterns/zipball/09c0cc067839bb2180074edfd5c12fa40236d837",
+                "reference": "09c0cc067839bb2180074edfd5c12fa40236d837",
                 "shasum": ""
             },
             "require": {
@@ -95,9 +133,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/design-patterns/issues",
-                "source": "https://github.com/EdmondDantes/design-patterns/tree/v0.2.21"
+                "source": "https://github.com/EdmondDantes/design-patterns/tree/v0.2.28"
             },
-            "time": "2024-09-22T06:53:38+00:00"
+            "time": "2024-10-20T12:42:08+00:00"
         },
         {
             "name": "ifcastle/di",
@@ -239,20 +277,63 @@
             "time": "2024-07-30T12:32:03+00:00"
         },
         {
-            "name": "ifcastle/service-manager",
-            "version": "v0.5.10",
+            "name": "ifcastle/protocol-contracts",
+            "version": "v0.5.16",
             "source": {
                 "type": "git",
-                "url": "https://github.com/EdmondDantes/service-manager.git",
-                "reference": "154f4a45707ad6b6bd9710a6bdf9ae0f35074cb3"
+                "url": "https://github.com/EdmondDantes/protocol-contracts.git",
+                "reference": "45cbca6de74cdfa0cfe629076430eb9f96f98bae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/154f4a45707ad6b6bd9710a6bdf9ae0f35074cb3",
-                "reference": "154f4a45707ad6b6bd9710a6bdf9ae0f35074cb3",
+                "url": "https://api.github.com/repos/EdmondDantes/protocol-contracts/zipball/45cbca6de74cdfa0cfe629076430eb9f96f98bae",
+                "reference": "45cbca6de74cdfa0cfe629076430eb9f96f98bae",
                 "shasum": ""
             },
             "require": {
+                "ifcastle/async-contracts": "^0.5.0",
+                "ifcastle/design-patterns": "^0.2.26",
+                "ifcastle/di": "^0.6.8",
+                "ifcastle/exceptions": "^5.0",
+                "psr/http-message": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\Protocol\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Protocol contracts.",
+            "keywords": [
+                "contracts",
+                "protocol"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/protocol-contracts/issues",
+                "source": "https://github.com/EdmondDantes/protocol-contracts/tree/v0.5.16"
+            },
+            "time": "2024-10-21T15:27:11+00:00"
+        },
+        {
+            "name": "ifcastle/service-manager",
+            "version": "v0.5.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/service-manager.git",
+                "reference": "8bd0371a96ec176a49df760417b8db801d3d3344"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/8bd0371a96ec176a49df760417b8db801d3d3344",
+                "reference": "8bd0371a96ec176a49df760417b8db801d3d3344",
+                "shasum": ""
+            },
+            "require": {
+                "ifcastle/design-patterns": "^0.2.27",
                 "ifcastle/di": "^0.6.0",
                 "ifcastle/exceptions": "^5.0",
                 "ifcastle/type-definitions": "^0.5.0"
@@ -278,22 +359,22 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/service-manager/issues",
-                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.5.10"
+                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.5.13"
             },
-            "time": "2024-10-12T10:06:20+00:00"
+            "time": "2024-10-25T07:12:45+00:00"
         },
         {
             "name": "ifcastle/type-definitions",
-            "version": "v0.5.9",
+            "version": "v0.5.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/type-definitions.git",
-                "reference": "6efa5deacade1df297ea23b258e12ac2de15c2bf"
+                "reference": "35d394dab550802bcddeabefcdfa186daddae881"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/type-definitions/zipball/6efa5deacade1df297ea23b258e12ac2de15c2bf",
-                "reference": "6efa5deacade1df297ea23b258e12ac2de15c2bf",
+                "url": "https://api.github.com/repos/EdmondDantes/type-definitions/zipball/35d394dab550802bcddeabefcdfa186daddae881",
+                "reference": "35d394dab550802bcddeabefcdfa186daddae881",
                 "shasum": ""
             },
             "require": {
@@ -326,9 +407,62 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/type-definitions/issues",
-                "source": "https://github.com/EdmondDantes/type-definitions/tree/v0.5.9"
+                "source": "https://github.com/EdmondDantes/type-definitions/tree/v0.5.16"
             },
-            "time": "2024-09-16T13:22:05+00:00"
+            "time": "2024-10-21T15:13:22+00:00"
+        },
+        {
+            "name": "psr/http-message",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-message/tree/2.0"
+            },
+            "time": "2023-04-04T09:54:51+00:00"
         },
         {
             "name": "psr/log",
@@ -1498,16 +1632,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.4.1",
+            "version": "11.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "7875627f15f4da7e7f0823d1f323f7295a77334e"
+                "reference": "1863643c3f04ad03dcb9c6996c294784cdda4805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7875627f15f4da7e7f0823d1f323f7295a77334e",
-                "reference": "7875627f15f4da7e7f0823d1f323f7295a77334e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1863643c3f04ad03dcb9c6996c294784cdda4805",
+                "reference": "1863643c3f04ad03dcb9c6996c294784cdda4805",
                 "shasum": ""
             },
             "require": {
@@ -1521,21 +1655,21 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.2",
-                "phpunit/php-code-coverage": "^11.0.6",
+                "phpunit/php-code-coverage": "^11.0.7",
                 "phpunit/php-file-iterator": "^5.1.0",
                 "phpunit/php-invoker": "^5.0.1",
                 "phpunit/php-text-template": "^4.0.1",
                 "phpunit/php-timer": "^7.0.1",
                 "sebastian/cli-parser": "^3.0.2",
                 "sebastian/code-unit": "^3.0.1",
-                "sebastian/comparator": "^6.1.0",
+                "sebastian/comparator": "^6.1.1",
                 "sebastian/diff": "^6.0.2",
                 "sebastian/environment": "^7.2.0",
                 "sebastian/exporter": "^6.1.3",
                 "sebastian/global-state": "^7.0.2",
                 "sebastian/object-enumerator": "^6.0.1",
                 "sebastian/type": "^5.1.0",
-                "sebastian/version": "^5.0.1"
+                "sebastian/version": "^5.0.2"
             },
             "suggest": {
                 "ext-soap": "To be able to generate mocks based on WSDL files"
@@ -1578,7 +1712,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.4.1"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.4.2"
             },
             "funding": [
                 {
@@ -1594,7 +1728,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-08T15:38:37+00:00"
+            "time": "2024-10-19T13:05:19+00:00"
         },
         {
             "name": "psr/container",
@@ -2401,16 +2535,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "6.1.0",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "fa37b9e2ca618cb051d71b60120952ee8ca8b03d"
+                "reference": "5ef523a49ae7a302b87b2102b72b1eda8918d686"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/fa37b9e2ca618cb051d71b60120952ee8ca8b03d",
-                "reference": "fa37b9e2ca618cb051d71b60120952ee8ca8b03d",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/5ef523a49ae7a302b87b2102b72b1eda8918d686",
+                "reference": "5ef523a49ae7a302b87b2102b72b1eda8918d686",
                 "shasum": ""
             },
             "require": {
@@ -2466,7 +2600,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/comparator/issues",
                 "security": "https://github.com/sebastianbergmann/comparator/security/policy",
-                "source": "https://github.com/sebastianbergmann/comparator/tree/6.1.0"
+                "source": "https://github.com/sebastianbergmann/comparator/tree/6.1.1"
             },
             "funding": [
                 {
@@ -2474,7 +2608,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-11T15:42:56+00:00"
+            "time": "2024-10-18T15:00:48+00:00"
         },
         {
             "name": "sebastian/complexity",

@@ -5,6 +5,10 @@ namespace IfCastle\Configurator;
 
 trait ServiceConfigReaderTrait
 {
+    public const string IS_ACTIVE = 'isActive';
+    public const string TAGS = 'tags';
+    public const string EXCLUDE_TAGS = 'excludeTags';
+    
     abstract protected function load(): void;
     protected array $data = [];
     
@@ -16,7 +20,7 @@ trait ServiceConfigReaderTrait
     }
     
     #[\Override]
-    public function findServiceConfigByScope(string $serviceName, string ...$scopes): array|null
+    public function findServiceConfigByTags(string $serviceName, string ...$tags): array|null
     {
         $this->load();
         
@@ -28,8 +32,8 @@ trait ServiceConfigReaderTrait
         
         // If any $scopesIncluded item is in $scopes, then return the serviceConfig
         // or if any $scopesExcluded item is in $scopes, then return null
-        if(count(array_intersect($serviceConfig['scopes'] ?? [], $scopes)) > 0
-           && count(array_intersect($serviceConfig['scopesExcluded'] ?? [], $scopes)) === 0) {
+        if(count(array_intersect($serviceConfig[self::TAGS] ?? [], $tags)) > 0
+           && count(array_intersect($serviceConfig[self::EXCLUDE_TAGS] ?? [], $tags)) === 0) {
             return $serviceConfig;
         }
         
@@ -45,7 +49,7 @@ trait ServiceConfigReaderTrait
     }
     
     #[\Override]
-    public function getServicesConfigByScope(string ...$scopes): array
+    public function getServicesConfigByTags(string ...$tags): array
     {
         $this->load();
         
@@ -55,8 +59,8 @@ trait ServiceConfigReaderTrait
             
             // If any $scopesIncluded item is in $scopes, then add the service to $servicesConfig
             // or if any $scopesExcluded item is in $scopes, then skip the service
-            if(count(array_intersect($config['scopes'] ?? [], $scopes)) > 0
-               && count(array_intersect($config['scopesExcluded'] ?? [], $scopes)) === 0) {
+            if(count(array_intersect($config[self::TAGS] ?? [], $tags)) > 0
+               && count(array_intersect($config[self::EXCLUDE_TAGS] ?? [], $tags)) === 0) {
                 $servicesConfig[$service] = $config;
             }
         }

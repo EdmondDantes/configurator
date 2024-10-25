@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace IfCastle\Configurator;
 
+use IfCastle\DI\Exceptions\ConfigException;
+use IfCastle\Exceptions\RuntimeException;
+use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByScopeInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryWriterInterface;
 
@@ -11,20 +14,40 @@ class ServiceConfigMutable          extends ConfigIniMutable
 {
     use ServiceConfigReaderTrait;
     
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     * @throws ConfigException
+     */
     #[\Override]
-    public function addServiceConfig(string $serviceName, array $serviceConfig, array $scopes = []): void
+    public function addServiceConfig(string     $serviceName,
+                                     array      $serviceConfig,
+                                     array|null $includeTags = null,
+                                     array|null $excludeTags = null
+    ): void
     {
-        if(array_key_exists('isActive', $serviceConfig) === false) {
-            $serviceConfig['isActive'] = false;
+        if(array_key_exists(self::IS_ACTIVE, $serviceConfig) === false) {
+            $serviceConfig[self::IS_ACTIVE] = false;
         }
         
-        if(array_key_exists('scopes', $serviceConfig) === false) {
-            $serviceConfig['scopes'] = $scopes;
+        if(array_key_exists(self::TAGS, $serviceConfig) === false && $includeTags !== null) {
+            $serviceConfig[self::TAGS] = $includeTags;
+        }
+        
+        if(array_key_exists(self::EXCLUDE_TAGS, $serviceConfig) && $excludeTags !== null) {
+            $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
         
         $this->set($serviceName, $serviceConfig);
     }
     
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws ConfigException
+     * @throws \ErrorException
+     */
     #[\Override]
     public function removeServiceConfig(string $serviceName): void
     {
@@ -35,16 +58,27 @@ class ServiceConfigMutable          extends ConfigIniMutable
     public function updateServiceConfig(
         string $serviceName,
         array  $serviceConfig,
-        array  $scopes = []
+        array|null $includeTags = null,
+        array|null $excludeTags = null
     ): void
     {
-        if($scopes !== []) {
-            $serviceConfig['scopes'] = $scopes;
+        if($includeTags !== [] && $includeTags !== null) {
+            $serviceConfig[self::TAGS] = $includeTags;
+        }
+        
+        if($excludeTags !== [] && $excludeTags !== null) {
+            $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
         
         $this->mergeSection($serviceName, $serviceConfig);
     }
     
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     * @throws ConfigException
+     */
     #[\Override]
     public function activateService(string $serviceName): void
     {
@@ -52,7 +86,7 @@ class ServiceConfigMutable          extends ConfigIniMutable
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
         
-        $this->mergeSection($serviceName, ['is_active' => true]);
+        $this->mergeSection($serviceName, [self::IS_ACTIVE => true]);
     }
     
     #[\Override]
@@ -62,17 +96,33 @@ class ServiceConfigMutable          extends ConfigIniMutable
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
         
-        $this->mergeSection($serviceName, ['is_active' => false]);
+        $this->mergeSection($serviceName, [self::IS_ACTIVE => false]);
     }
     
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws ConfigException
+     * @throws \ErrorException
+     */
     #[\Override]
-    public function changeServiceScope(string $serviceName, array $scopes): void
+    public function changeServiceTags(string $serviceName, array|null $includeTags = null, array|null $excludeTags = null): void
     {
         if($this->findServiceConfig($serviceName) === null) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
         
-        $this->mergeSection($serviceName, ['scopes' => $scopes]);
+        $data                       = [];
+        
+        if($includeTags !== [] && $includeTags !== null) {
+            $data[self::TAGS]       = $includeTags;
+        }
+        
+        if($excludeTags !== [] && $excludeTags !== null) {
+            $data[self::EXCLUDE_TAGS] = $excludeTags;
+        }
+        
+        $this->mergeSection($serviceName, $data);
     }
     
     #[\Override]
