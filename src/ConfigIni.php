@@ -33,8 +33,8 @@ class ConfigIni                     implements ConfigInterface
             throw new FileIsNotExistException($this->file);
         }
         
-        $data                       = Safe::execute(fn() => parse_ini_file(
-            $this->file, true, INI_SCANNER_TYPED)
+        $data                       = Safe::execute(fn() => \parse_ini_file(
+            $this->file, true, \INI_SCANNER_TYPED)
         );
         
         if($data === false) {

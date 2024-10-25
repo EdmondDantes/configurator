@@ -14,6 +14,11 @@ class ServiceConfigMutable          extends ConfigIniMutable
 {
     use ServiceConfigReaderTrait;
     
+    public function __construct(string $appDir, bool $isReadOnly = false)
+    {
+        parent::__construct($appDir.'/services.ini', $isReadOnly);
+    }
+    
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -23,19 +28,18 @@ class ServiceConfigMutable          extends ConfigIniMutable
     #[\Override]
     public function addServiceConfig(string     $serviceName,
                                      array      $serviceConfig,
+                                     bool       $isActive = true,
                                      array|null $includeTags = null,
                                      array|null $excludeTags = null
     ): void
     {
-        if(array_key_exists(self::IS_ACTIVE, $serviceConfig) === false) {
-            $serviceConfig[self::IS_ACTIVE] = false;
-        }
+        $serviceConfig[self::IS_ACTIVE] = $isActive;
         
-        if(array_key_exists(self::TAGS, $serviceConfig) === false && $includeTags !== null) {
+        if($includeTags !== null) {
             $serviceConfig[self::TAGS] = $includeTags;
         }
         
-        if(array_key_exists(self::EXCLUDE_TAGS, $serviceConfig) && $excludeTags !== null) {
+        if($excludeTags !== null) {
             $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
         

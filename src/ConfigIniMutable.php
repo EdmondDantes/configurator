@@ -268,6 +268,17 @@ class ConfigIniMutable              extends ConfigIni
         return new static($this->file, false);
     }
     
+    #[\Override]
+    protected function load(): void
+    {
+        try {
+            parent::load();
+        } catch (FileIsNotExistException) {
+            Safe::execute(fn() => \file_put_contents($this->file, ''));
+            parent::load();
+        }
+    }
+    
     /**
      * @throws ConfigException
      */
