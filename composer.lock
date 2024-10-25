@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f8283c184d1f8f33d434479082a4f81",
+    "content-hash": "4389f0bb3c7a11a6d605f942a7fd0d64",
     "packages": [
         {
             "name": "ifcastle/application",
@@ -517,60 +517,6 @@
     ],
     "packages-dev": [
         {
-            "name": "amphp/php-cs-fixer-config",
-            "version": "v2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amphp/php-cs-fixer-config.git",
-                "reference": "0fad9ec6a10a0a58fbf8cb77f41da34f80c031d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amphp/php-cs-fixer-config/zipball/0fad9ec6a10a0a58fbf8cb77f41da34f80c031d6",
-                "reference": "0fad9ec6a10a0a58fbf8cb77f41da34f80c031d6",
-                "shasum": ""
-            },
-            "require": {
-                "friendsofphp/php-cs-fixer": "^3.5",
-                "php": ">=7.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Amp\\CodeStyle\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Niklas Keller",
-                    "email": "me@kelunik.com"
-                },
-                {
-                    "name": "Sascha-Oliver Prolic",
-                    "email": "saschaprolic@googlemail.com"
-                }
-            ],
-            "description": "Code style config for AMPHP.",
-            "support": {
-                "issues": "https://github.com/amphp/php-cs-fixer-config/issues",
-                "source": "https://github.com/amphp/php-cs-fixer-config/tree/v2.1.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/amphp",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-04-19T02:16:09+00:00"
-        },
-        {
             "name": "clue/ndjson-react",
             "version": "v1.3.0",
             "source": {
@@ -1070,6 +1016,45 @@
                 }
             ],
             "time": "2024-08-30T23:09:38+00:00"
+        },
+        {
+            "name": "ifcastle/codestyle",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdmondDantes/ifcastle-codestyle.git",
+                "reference": "1b191dc5443c4cf2f39a80a78df8a42add922710"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdmondDantes/ifcastle-codestyle/zipball/1b191dc5443c4cf2f39a80a78df8a42add922710",
+                "reference": "1b191dc5443c4cf2f39a80a78df8a42add922710",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "php": ">=8.3"
+            },
+            "type": "codestyle",
+            "autoload": {
+                "psr-4": {
+                    "IfCastle\\CodeStyle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "CodeStyle",
+            "keywords": [
+                "Codestyle",
+                "ifcastle"
+            ],
+            "support": {
+                "issues": "https://github.com/EdmondDantes/ifcastle-codestyle/issues",
+                "source": "https://github.com/EdmondDantes/ifcastle-codestyle/tree/v0.1.1"
+            },
+            "time": "2024-10-25T12:57:40+00:00"
         },
         {
             "name": "myclabs/deep-copy",

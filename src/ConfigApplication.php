@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace IfCastle\Configurator;
@@ -11,24 +12,25 @@ use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByScopeInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryWriterInterface;
 
-final class ConfigApplication       extends ConfigIni
-                                    implements ZeroContextRequiredInterface, BootloaderInterface
+final class ConfigApplication extends ConfigIni implements ZeroContextRequiredInterface, BootloaderInterface
 {
-    public function __construct() { parent::__construct('!undefined!'); }
-    
-    
+    public function __construct()
+    {
+        parent::__construct('!undefined!');
+    }
+
     #[\Override]
     public function setZeroContext(ZeroContextInterface $zeroContext): static
     {
         $this->file                 = $zeroContext->getApplicationDirectory() . '/main.ini';
         return $this;
     }
-    
+
     #[\Override]
     public function buildBootloader(BootloaderExecutorInterface $bootloaderExecutor): void
     {
         $appDir                     = $bootloaderExecutor->getBootloaderContext()->getApplicationDirectory();
-        
+
         $bootloaderExecutor->getBootloaderContext()->getSystemEnvironmentBootBuilder()
             ->bindObject(
                 [RepositoryReaderInterface::class, RepositoryReaderByScopeInterface::class],

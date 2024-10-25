@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace IfCastle\Configurator;
 
-class ConfigMain                    extends ConfigIni
+class ConfigMain extends ConfigIni
 {
     public function __construct(string $appDir)
     {

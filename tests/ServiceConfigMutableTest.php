@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace IfCastle\Configurator;
@@ -7,14 +8,14 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
 {
     public function testSet(): void
     {
-        $file                       = $this->appDir.'/services.ini';
+        $file                       = $this->appDir . '/services.ini';
         $config                     = new ServiceConfigMutable($this->appDir);
 
         $config->addServiceConfig('service1', ['value1' => 'value1'], true, ['tag1', 'tag2'], ['exclude1', 'exclude2']);
         $config->addServiceConfig('service2', ['value2' => 'value2'], false, ['tag3', 'tag4'], ['exclude3', 'exclude4']);
         $config->saveRepository();
-        
-        $data                       = parse_ini_file($file, true, INI_SCANNER_TYPED);
+
+        $data                       = \parse_ini_file($file, true, INI_SCANNER_TYPED);
         $expected                   = [
             'service1'              =>
                 [
@@ -47,7 +48,7 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
                         ],
                 ],
         ];
-        
+
         $this->assertNotFalse($data, 'File not found');
         $this->assertEquals($expected, $data, 'Data not equals');
     }

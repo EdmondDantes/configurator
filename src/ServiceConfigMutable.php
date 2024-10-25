@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace IfCastle\Configurator;
@@ -9,16 +10,15 @@ use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByScopeInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryWriterInterface;
 
-class ServiceConfigMutable          extends ConfigIniMutable
-                                    implements RepositoryWriterInterface, RepositoryReaderByScopeInterface
+class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterInterface, RepositoryReaderByScopeInterface
 {
     use ServiceConfigReaderTrait;
-    
+
     public function __construct(string $appDir, bool $isReadOnly = false)
     {
-        parent::__construct($appDir.'/services.ini', $isReadOnly);
+        parent::__construct($appDir . '/services.ini', $isReadOnly);
     }
-    
+
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -27,25 +27,24 @@ class ServiceConfigMutable          extends ConfigIniMutable
      */
     #[\Override]
     public function addServiceConfig(string     $serviceName,
-                                     array      $serviceConfig,
-                                     bool       $isActive = true,
-                                     array|null $includeTags = null,
-                                     array|null $excludeTags = null
-    ): void
-    {
+        array      $serviceConfig,
+        bool       $isActive = true,
+        array|null $includeTags = null,
+        array|null $excludeTags = null
+    ): void {
         $serviceConfig[self::IS_ACTIVE] = $isActive;
-        
-        if($includeTags !== null) {
+
+        if ($includeTags !== null) {
             $serviceConfig[self::TAGS] = $includeTags;
         }
-        
-        if($excludeTags !== null) {
+
+        if ($excludeTags !== null) {
             $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
-        
+
         $this->set($serviceName, $serviceConfig);
     }
-    
+
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -57,26 +56,25 @@ class ServiceConfigMutable          extends ConfigIniMutable
     {
         $this->remove($serviceName);
     }
-    
+
     #[\Override]
     public function updateServiceConfig(
         string $serviceName,
         array  $serviceConfig,
         array|null $includeTags = null,
         array|null $excludeTags = null
-    ): void
-    {
-        if($includeTags !== [] && $includeTags !== null) {
+    ): void {
+        if ($includeTags !== [] && $includeTags !== null) {
             $serviceConfig[self::TAGS] = $includeTags;
         }
-        
-        if($excludeTags !== [] && $excludeTags !== null) {
+
+        if ($excludeTags !== [] && $excludeTags !== null) {
             $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
-        
+
         $this->mergeSection($serviceName, $serviceConfig);
     }
-    
+
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -86,23 +84,23 @@ class ServiceConfigMutable          extends ConfigIniMutable
     #[\Override]
     public function activateService(string $serviceName): void
     {
-        if($this->findServiceConfig($serviceName) === null) {
+        if ($this->findServiceConfig($serviceName) === null) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
-        
+
         $this->mergeSection($serviceName, [self::IS_ACTIVE => true]);
     }
-    
+
     #[\Override]
     public function deactivateService(string $serviceName): void
     {
-        if($this->findServiceConfig($serviceName) === null) {
+        if ($this->findServiceConfig($serviceName) === null) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
-        
+
         $this->mergeSection($serviceName, [self::IS_ACTIVE => false]);
     }
-    
+
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -112,39 +110,39 @@ class ServiceConfigMutable          extends ConfigIniMutable
     #[\Override]
     public function changeServiceTags(string $serviceName, array|null $includeTags = null, array|null $excludeTags = null): void
     {
-        if($this->findServiceConfig($serviceName) === null) {
+        if ($this->findServiceConfig($serviceName) === null) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
-        
+
         $data                       = [];
-        
-        if($includeTags !== [] && $includeTags !== null) {
+
+        if ($includeTags !== [] && $includeTags !== null) {
             $data[self::TAGS]       = $includeTags;
         }
-        
-        if($excludeTags !== [] && $excludeTags !== null) {
+
+        if ($excludeTags !== [] && $excludeTags !== null) {
             $data[self::EXCLUDE_TAGS] = $excludeTags;
         }
-        
+
         $this->mergeSection($serviceName, $data);
     }
-    
+
     #[\Override]
     public function saveRepository(): void
     {
         $this->save();
     }
-    
+
     protected function afterBuild(string $content): string
     {
-        $at                         = date('Y-m-d H:i:s');
+        $at                         = \date('Y-m-d H:i:s');
         $comment                    = <<<INI
-; ================================================================
-; This file is generated by the IfCastle Configurator
-; at $at
-; Do not edit this file manually!
-; ================================================================
-INI;
-        return $comment.$content;
+                        ; ================================================================
+                        ; This file is generated by the IfCastle Configurator
+                        ; at $at
+                        ; Do not edit this file manually!
+                        ; ================================================================
+            INI;
+        return $comment . $content;
     }
 }
