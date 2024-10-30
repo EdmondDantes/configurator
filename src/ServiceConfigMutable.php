@@ -75,13 +75,31 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
      *
      * @throws RuntimeException
      * @throws FileIsNotExistException
-     * @throws ConfigException
      * @throws \ErrorException
      */
     #[\Override]
     public function removeServiceConfig(string $packageName, string $serviceName): void
     {
-        $this->remove($serviceName);
+        $this->load();
+        
+        if(false === array_key_exists($serviceName, $this->data)) {
+            return;
+        }
+        
+        $services                   = &$this->data[$serviceName];
+        
+        if (array_key_exists(self::NAME, $services) && $services[self::PACKAGE] === $packageName) {
+            unset($this->data[$serviceName]);
+            return;
+        }
+
+        foreach ($services as $suffix => $service) {
+            if ($service[self::PACKAGE] === $packageName) {
+                unset($services[$suffix]);
+            }
+        }
+        
+        unset($services);
     }
     
     /**
@@ -138,9 +156,9 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
     /**
      * @param string $packageName
      * @param string $serviceName
-     * @param string $serviceSuffix *
+     * @param string $serviceSuffix
      *
-* @throws RuntimeException
+     * @throws RuntimeException
      * @throws FileIsNotExistException
      * @throws \ErrorException
      * @throws ConfigException
@@ -208,7 +226,36 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
         $this->save();
     }
     
-    protected function isExists(string $serviceName, ?string $servicePrefix = null): bool
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     */
+    protected function findServiceConfigByNameAndSuffix(string $serviceName, ?string $serviceSuffix = null): array|null
+    {
+        $this->load();
+        $services                   = $this->data[$serviceName] ?? null;
+
+        if ($services === null) {
+            return null;
+        }
+        
+        if (array_key_exists(self::NAME, $services)) {
+            $services               = [$services];
+        }
+        
+        if($services === []) {
+            return null;
+        }
+        
+        if ($serviceSuffix === null) {
+            return $services[array_key_first($services)];
+        }
+        
+        return $services[$serviceSuffix] ?? null;
+    }
+    
+    protected function isExists(string $serviceName, ?string $serviceSuffix = null): bool
     {
         $this->load();
         $services                   = $this->data[$serviceName] ?? null;
@@ -221,11 +268,11 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
             $services               = [$services];
         }
         
-        if ($servicePrefix === null) {
+        if ($serviceSuffix === null) {
             return true;
         }
         
-        return array_key_exists($servicePrefix, $services);
+        return array_key_exists($serviceSuffix, $services);
     }
     
     /**
@@ -267,6 +314,12 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
         return $conflicts;
     }
     
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws ConfigException
+     * @throws \ErrorException
+     */
     protected function assignServiceConfig(string $serviceName, array $config, string $suffix = null): void
     {
         if(array_key_exists($serviceName, $this->data) && array_key_exists(self::NAME, $this->data[$serviceName])) {
