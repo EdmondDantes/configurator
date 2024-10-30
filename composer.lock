@@ -326,16 +326,16 @@
         },
         {
             "name": "ifcastle/service-manager",
-            "version": "v0.6.2",
+            "version": "v0.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/service-manager.git",
-                "reference": "85634208d7f4af5f610cfa0f20107dab94ace1f1"
+                "reference": "fbfce80cb328655147dbe04e659ffd395f4d588a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/85634208d7f4af5f610cfa0f20107dab94ace1f1",
-                "reference": "85634208d7f4af5f610cfa0f20107dab94ace1f1",
+                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/fbfce80cb328655147dbe04e659ffd395f4d588a",
+                "reference": "fbfce80cb328655147dbe04e659ffd395f4d588a",
                 "shasum": ""
             },
             "require": {
@@ -367,9 +367,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/service-manager/issues",
-                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.6.2"
+                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.6.3"
             },
-            "time": "2024-10-30T11:24:45+00:00"
+            "time": "2024-10-30T12:30:47+00:00"
         },
         {
             "name": "ifcastle/type-definitions",
