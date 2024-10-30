@@ -8,7 +8,7 @@ use IfCastle\Application\Bootloader\BootloaderExecutorInterface;
 use IfCastle\Application\Bootloader\BootloaderInterface;
 use IfCastle\Application\Bootloader\Builder\ZeroContextInterface;
 use IfCastle\Application\Bootloader\Builder\ZeroContextRequiredInterface;
-use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByScopeInterface;
+use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByTagsInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryWriterInterface;
 
@@ -33,7 +33,7 @@ final class ConfigApplication extends ConfigIni implements ZeroContextRequiredIn
 
         $bootloaderExecutor->getBootloaderContext()->getSystemEnvironmentBootBuilder()
             ->bindObject(
-                [RepositoryReaderInterface::class, RepositoryReaderByScopeInterface::class],
+                [RepositoryReaderInterface::class, RepositoryReaderByTagsInterface::class],
                 new ServiceConfig($appDir)
             )->bindObject(RepositoryWriterInterface::class, new ServiceConfigMutable($appDir));
     }

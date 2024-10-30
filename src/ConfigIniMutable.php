@@ -19,6 +19,11 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
         parent::__construct($file);
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws ConfigException
+     * @throws \ErrorException
+     */
     public function save(): void
     {
         $this->throwReadOnly();
@@ -51,7 +56,7 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
             return false;
         };
 
-        $result                     = [];
+        $plain                      = [];
         $sections                   = [];
 
         // 1. Check if any value is a nested array
@@ -60,20 +65,20 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
                 $sections           = \array_merge($sections, $this->build($value, $parentKey !== '' ? $parentKey . '.' . $key : $key));
             } elseif (\is_array($value) && \array_is_list($value)) {
                 foreach ($value as $v) {
-                    $result[]       = $this->formatKeyValue($key . '[]', $v);
+                    $plain[]        = $this->formatKeyValue($key . '[]', $v);
                 }
             } elseif (\is_array($value)) {
                 foreach ($value as $k => $v) {
-                    $result[]       = $this->formatKeyValue($key . '[' . $k . ']', $v);
+                    $plain[]        = $this->formatKeyValue($key . '[' . $k . ']', $v);
                 }
             } else {
-                $result[]           = $this->formatKeyValue($key, $value);
+                $plain[]            = $this->formatKeyValue($key, $value);
             }
         }
 
-        $result                     = \array_merge($result, $sections);
+        $result                     = \array_merge($plain, $sections);
 
-        if ($parentKey !== '' && $result !== []) {
+        if ($parentKey !== '' && $plain !== []) {
             \array_unshift($result, '[' . $parentKey . ']');
             \array_unshift($result, '', ';' . \str_repeat('-', 40));
         }
@@ -108,22 +113,8 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
     {
         $this->throwReadOnly();
         $this->load();
-
-        $path                       = \explode('.', $node);
-
-        $current                    = &$this->data;
-
-        do {
-            $key                    = \array_shift($path);
-
-            if (!\array_key_exists($key, $current) || !\is_array($current[$key])) {
-                $current[$key]      = [];
-            }
-
-            $current                = &$current[$key];
-        } while ($path !== []);
-
         $this->wasModified          = true;
+        $current                    = &$this->referenceBy($node);
         $current                    = $value;
 
         return $this;
@@ -138,30 +129,15 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
     #[\Override]
     public function setSection(string $node, array $value): static
     {
-        $this->throwReadOnly();
-        $this->load();
-
-        $path                       = \explode('.', $node);
-
-        $current                    = &$this->data;
-
-        do {
-            $key                    = \array_shift($path);
-
-            if (!\array_key_exists($key, $current) || !\is_array($current[$key])) {
-                $current[$key]      = [];
-            }
-
-            $current                = &$current[$key];
-        } while ($path !== []);
-
-        $this->wasModified          = true;
-
-        $this->data[$node]          = $value;
-
-        return $this;
+        return $this->set($node, $value);
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws ConfigException
+     * @throws \ErrorException
+     */
     #[\Override]
     public function merge(array $config): static
     {
@@ -186,22 +162,8 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
     {
         $this->throwReadOnly($node);
         $this->load();
-
-        $path                       = \explode('.', $node);
-
-        $current                    = &$this->data;
-
-        do {
-            $key                    = \array_shift($path);
-
-            if (!\array_key_exists($key, $current) || !\is_array($current[$key])) {
-                $current[$key]      = [];
-            }
-
-            $current                = &$current[$key];
-        } while ($path !== []);
-
         $this->wasModified          = true;
+        $current                    = &$this->referenceBy($node);
 
         $current                    = \array_merge($current, $config);
 
@@ -277,6 +239,25 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
             Safe::execute(fn() => \file_put_contents($this->file, ''));
             parent::load();
         }
+    }
+
+    protected function &referenceBy(string $node): mixed
+    {
+        $path                       = \explode('.', $node);
+
+        $current                    = &$this->data;
+
+        do {
+            $key                    = \array_shift($path);
+
+            if (!\array_key_exists($key, $current) || !\is_array($current[$key])) {
+                $current[$key]      = [];
+            }
+
+            $current                = &$current[$key];
+        } while ($path !== []);
+
+        return $current;
     }
 
     /**

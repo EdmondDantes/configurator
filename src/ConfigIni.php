@@ -88,6 +88,11 @@ class ConfigIni implements ConfigInterface
         return $current;
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     */
     public function findValue(string $key, mixed $default = null): mixed
     {
         $this->load();
@@ -101,6 +106,11 @@ class ConfigIni implements ConfigInterface
         return $this->find(...$path) ?? $default;
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     */
     public function findSection(string $section): array
     {
         $this->load();
@@ -114,6 +124,11 @@ class ConfigIni implements ConfigInterface
         return $result;
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     */
     public function requireValue(string $key): mixed
     {
         $this->load();
@@ -127,6 +142,11 @@ class ConfigIni implements ConfigInterface
         return $value;
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws FileIsNotExistException
+     * @throws \ErrorException
+     */
     public function requireSection(string $section): array
     {
         $this->load();
