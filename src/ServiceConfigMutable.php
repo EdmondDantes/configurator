@@ -115,6 +115,31 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
         array|null  $excludeTags = null,
         string|null $serviceSuffix = null
     ): void {
+        
+        // First, we try to find the service configuration
+        $services                   = $this->data[$serviceName] ?? null;
+        
+        if ($services === null) {
+            throw new \InvalidArgumentException("Service '$serviceName' is not found");
+        }
+        
+        if (array_key_exists(self::NAME, $services)) {
+            $services               = [$services];
+        }
+        
+        $service                    = null;
+        
+        foreach ($services as $suffix => $config) {
+            if ($serviceSuffix === $suffix || ($serviceSuffix === null && $config[self::PACKAGE] === $packageName)) {
+                $service            = $config;
+                break;
+            }
+        }
+        
+        if($service === null) {
+            throw new \InvalidArgumentException("Service '$serviceName' is not found");
+        }
+        
         if ($includeTags !== [] && $includeTags !== null) {
             $serviceConfig[self::TAGS] = $includeTags;
         }
@@ -123,7 +148,9 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
             $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
 
-        $this->mergeSection($serviceName, $serviceConfig);
+        $service                    = array_merge($service, $serviceConfig);
+        
+        $this->set($serviceName, $service);
     }
 
     /**
