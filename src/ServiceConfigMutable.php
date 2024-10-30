@@ -65,24 +65,8 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
                 $serviceConfig[self::IS_ACTIVE] = false;
             }
         }
-        
-        if(array_key_exists($serviceName, $this->data) && array_key_exists(self::NAME, $this->data[$serviceName])) {
-            $this->data[$serviceName] = [$this->data[$serviceName]];
-        }
-        
-        if(array_key_exists($serviceName, $this->data) && $serviceSuffix === null) {
-            $serviceSuffix          = \count($this->data[$serviceName]);
-        }
-        
-        if($serviceSuffix !== null) {
-            $serviceName            .= $serviceSuffix;
-        }
-        
-        if($serviceSuffix !== null) {
-            $serviceName            .= $serviceSuffix;
-        }
-        
-        $this->set($serviceName, $serviceConfig);
+
+        $this->assignServiceConfig($serviceName, $serviceConfig, $serviceSuffix);
     }
 
     /**
@@ -148,9 +132,7 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
             $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
 
-        $service                    = array_merge($service, $serviceConfig);
-        
-        $this->set($serviceName, $service);
+        $this->assignServiceConfig($serviceName, array_merge($service, $serviceConfig), $serviceSuffix);
     }
 
     /**
@@ -283,6 +265,23 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
         }
         
         return $conflicts;
+    }
+    
+    protected function assignServiceConfig(string $serviceName, array $config, string $suffix = null): void
+    {
+        if(array_key_exists($serviceName, $this->data) && array_key_exists(self::NAME, $this->data[$serviceName])) {
+            $this->data[$serviceName] = [$this->data[$serviceName]];
+        }
+        
+        if(array_key_exists($serviceName, $this->data) && $suffix === null) {
+            $suffix                 = \count($this->data[$serviceName]);
+        }
+        
+        if($suffix !== null) {
+            $serviceName            .= $suffix;
+        }
+        
+        $this->set($serviceName, $config);
     }
     
     protected function afterBuild(string $content): string
