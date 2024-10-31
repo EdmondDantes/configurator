@@ -166,11 +166,14 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
     #[\Override]
     public function activateService(string $packageName, string $serviceName, string $serviceSuffix): void
     {
-        if ($this->findServiceConfig($serviceName) === null) {
-            throw new \InvalidArgumentException("Service '$serviceName' is not found");
+        $serviceConfig              = &$this->findRefToServiceConfigByNameAndSuffix($serviceName, $serviceSuffix);
+        
+        if($serviceConfig === null) {
+            throw new \InvalidArgumentException("Service '$serviceName.$serviceSuffix' is not found");
         }
 
-        $this->mergeSection($serviceName, [self::IS_ACTIVE => true]);
+        $serviceConfig[self::IS_ACTIVE] = true;
+        unset($serviceConfig);
     }
     
     /**
@@ -182,11 +185,14 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
     #[\Override]
     public function deactivateService(string $packageName, string $serviceName, string $serviceSuffix): void
     {
-        if ($this->findServiceConfig($serviceName) === null) {
-            throw new \InvalidArgumentException("Service '$serviceName' is not found");
+        $serviceConfig              = &$this->findRefToServiceConfigByNameAndSuffix($serviceName, $serviceSuffix);
+        
+        if($serviceConfig === null) {
+            throw new \InvalidArgumentException("Service '$serviceName.$serviceSuffix' is not found");
         }
-
-        $this->mergeSection($serviceName, [self::IS_ACTIVE => false]);
+        
+        $serviceConfig[self::IS_ACTIVE] = false;
+        unset($serviceConfig);
     }
 
     /**
@@ -203,21 +209,21 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
                                       array|null $excludeTags = null
     ): void
     {
-        if ($this->findServiceConfig($serviceName) === null) {
-            throw new \InvalidArgumentException("Service '$serviceName' is not found");
+        $serviceConfig              = &$this->findRefToServiceConfigByNameAndSuffix($serviceName, $serviceSuffix);
+        
+        if($serviceConfig === null) {
+            throw new \InvalidArgumentException("Service '$serviceName.$serviceSuffix' is not found");
         }
 
-        $data                       = [];
-
         if ($includeTags !== [] && $includeTags !== null) {
-            $data[self::TAGS]       = $includeTags;
+            $serviceConfig[self::TAGS]       = $includeTags;
         }
 
         if ($excludeTags !== [] && $excludeTags !== null) {
-            $data[self::EXCLUDE_TAGS] = $excludeTags;
+            $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
-
-        $this->mergeSection($serviceName, $data);
+        
+        unset($serviceConfig);
     }
 
     #[\Override]
@@ -231,13 +237,14 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
      * @throws FileIsNotExistException
      * @throws \ErrorException
      */
-    protected function findServiceConfigByNameAndSuffix(string $serviceName, ?string $serviceSuffix = null): array|null
+    protected function &findRefToServiceConfigByNameAndSuffix(string $serviceName, ?string $serviceSuffix = null): array|null
     {
         $this->load();
         $services                   = $this->data[$serviceName] ?? null;
+        $nullRef                    = null;
 
         if ($services === null) {
-            return null;
+            return $nullRef;
         }
         
         if (array_key_exists(self::NAME, $services)) {
@@ -245,14 +252,18 @@ class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterI
         }
         
         if($services === []) {
-            return null;
+            return $nullRef;
         }
         
         if ($serviceSuffix === null) {
             return $services[array_key_first($services)];
         }
         
-        return $services[$serviceSuffix] ?? null;
+        if(array_key_exists($serviceSuffix, $services)) {
+            return $services[$serviceSuffix];
+        }
+        
+        return $nullRef;
     }
     
     protected function isExists(string $serviceName, ?string $serviceSuffix = null): bool
