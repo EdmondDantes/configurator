@@ -25,9 +25,9 @@
         }
     },
     "require": {
-        "ifcastle/di": "^0.6.7",
+        "ifcastle/di": "^0.7.1",
         "ifcastle/os-utilities": "^0.5.0",
-        "ifcastle/service-manager": "^0.6.0",
+        "ifcastle/service-manager": "^0.6.3",
         "ifcastle/application": "^0.7.5"
     },
     "require-dev": {

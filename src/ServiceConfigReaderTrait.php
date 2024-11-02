@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace IfCastle\Configurator;
 
-use IfCastle\Exceptions\RuntimeException;
-use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
+use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
 
 trait ServiceConfigReaderTrait
 {
@@ -16,152 +15,63 @@ trait ServiceConfigReaderTrait
     public const string EXCLUDE_TAGS = 'excludeTags';
 
     abstract protected function load(): void;
-    protected array $data = [];
     
     /**
-     * Returns all services configuration with duplicates.
-     *
-     * @return array<array<array<mixed>>>
+     * @var array<array<array<mixed>>>
      */
-    #[\Override]
-    public function getServicesConfigAll(): array
-    {
-        $this->load();
-        return $this->data;
-    }
+    protected array $data           = [];
     
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws \ErrorException
-     */
-    #[\Override]
-    public function getServicesConfig(): array
-    {
-        $this->load();
-        
-        $services                   = [];
-        
-        foreach ($this->data as $config) {
-            if(array_key_exists(self::NAME, $config)) {
-                $services[$config[self::NAME]] = $config;
-            }
-        }
-        
-        return $this->data;
-    }
+    protected bool $isLoaded        = false;
     
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws \ErrorException
-     */
-    #[\Override]
-    public function findServiceConfigByTags(string $serviceName, string ...$tags): array|null
+    public function getServiceCollection(
+        string|null $serviceName = null,
+        string|null $packageName = null,
+        string|null $suffix = null,
+        array       $tags = []
+    ): array
     {
-        $this->load();
-        
-        $services                   = $this->data[$serviceName] ?? null;
-
-        if ($services === null) {
-            return null;
+        if($this->isLoaded === false) {
+            $this->load();
+            $this->normalizeDataAfterLoad();
         }
         
-        if(array_key_exists(self::NAME, $services)) {
-            $services               = [$services];
+        if($serviceName === null && $packageName === null && $suffix === null && $tags === []) {
+            return $this->data;
         }
         
-        foreach ($services as $serviceConfig) {
-            // If any $scopesIncluded item is in $scopes, then return the serviceConfig
-            // or if any $scopesExcluded item is in $scopes, then return null
-            if (\count(\array_intersect($serviceConfig[self::TAGS] ?? [], $tags)) > 0
-               && \count(\array_intersect($serviceConfig[self::EXCLUDE_TAGS] ?? [], $tags)) === 0) {
-                return $serviceConfig;
-            }
-        }
+        $collection                 = [];
         
-        return null;
-    }
-    
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws \ErrorException
-     */
-    #[\Override]
-    public function findServiceConfig(string $serviceName): array|null
-    {
-        $this->load();
-        
-        $services = $this->data[$serviceName] ?? null;
-        
-        if ($services === null || $services === []) {
-            return null;
-        }
-        
-        if(array_key_exists(self::NAME, $services)) {
-            return $services;
+        if($serviceName !== null && array_key_exists($serviceName, $this->data)) {
+            $set                    = [$serviceName => $this->data[$serviceName]];
         } else {
-            return $services[array_key_first($services)];
+            $set                    =& $this->data;
         }
+        
+        foreach ($set as $service => $implementations) {
+            foreach ($implementations as $serviceSuffix => $serviceConfig) {
+                
+                if(($suffix !== null && $suffix !== (string)$serviceSuffix)
+                   || ($packageName !== null && $serviceConfig[ServiceCollectionInterface::PACKAGE] !== $packageName)
+                   || ($tags !== [] && \count(\array_intersect($serviceConfig[ServiceCollectionInterface::TAGS] ?? [], $tags)) === 0)
+                   || \count(\array_intersect($serviceConfig[ServiceCollectionInterface::EXCLUDE_TAGS] ?? [], $tags)) > 0) {
+                    continue;
+                }
+                
+                $collection[$service][(string)$serviceSuffix] = $serviceConfig;
+            }
+        }
+        
+        return $collection;
     }
     
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws \ErrorException
-     */
-    #[\Override]
-    public function getServicesConfigByTags(string ...$tags): array
+    protected function normalizeDataAfterLoad(): void
     {
-        $this->load();
-
-        $servicesConfig             = [];
-
-        foreach ($this->data as $service => $configs) {
-
-            if(array_key_exists(self::NAME, $configs)) {
-                $configs            = [$configs];
-            }
-            
-            foreach ($configs as $config) {
-                // If any $scopesIncluded item is in $scopes, then add the service to $servicesConfig
-                // or if any $scopesExcluded item is in $scopes, then skip the service
-                if (\count(\array_intersect($config[self::TAGS] ?? [], $tags)) > 0
-                   && \count(\array_intersect($config[self::EXCLUDE_TAGS] ?? [], $tags)) === 0) {
-                    $servicesConfig[$service] = $config;
-                }
-            }
-        }
-
-        return $servicesConfig;
-    }
-    
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws \ErrorException
-     */
-    #[\Override]
-    public function findServicesConfigByPackage(string $packageName): array
-    {
-        $this->load();
-        
-        $servicesConfig             = [];
+        $this->isLoaded             = true;
         
         foreach ($this->data as $service => $configs) {
-            
-            if(array_key_exists(self::NAME, $configs)) {
-                $configs            = [$configs];
-            }
-            
-            foreach ($configs as $config) {
-                if ($config[self::PACKAGE] === $packageName) {
-                    $servicesConfig[$service] = $config;
-                }
+            if(array_key_exists(ServiceCollectionInterface::NAME, $configs)) {
+                $this->data[$service] = [$configs];
             }
         }
-        
-        return $servicesConfig;
     }
 }

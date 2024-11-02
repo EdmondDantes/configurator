@@ -7,9 +7,9 @@ namespace IfCastle\Configurator;
 use IfCastle\DI\Exceptions\ConfigException;
 use IfCastle\Exceptions\RuntimeException;
 use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
-use IfCastle\ServiceManager\RepositoryStorages\RepositoryWriterInterface;
+use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionWriterInterface;
 
-class ServiceConfigMutable extends ConfigIniMutable implements RepositoryWriterInterface
+class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollectionWriterInterface
 {
     use ServiceConfigReaderTrait;
 

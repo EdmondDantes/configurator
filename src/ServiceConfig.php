@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace IfCastle\Configurator;
 
-use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByTagsInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
+use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
 
 /**
  * Ini configuration reader|writer for services.
@@ -21,7 +21,7 @@ use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
  * but with different implementations for various use cases.
  *
  */
-class ServiceConfig extends ConfigIni implements RepositoryReaderInterface, RepositoryReaderByTagsInterface
+class ServiceConfig extends ConfigIni implements RepositoryReaderInterface, ServiceCollectionInterface
 {
     use ServiceConfigReaderTrait;
 
