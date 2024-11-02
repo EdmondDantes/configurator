@@ -47,7 +47,7 @@ class ConfigIni implements ConfigInterface
         // Convert all sections with dot notation to nest arrays
         foreach ($data as $section => $values) {
 
-            $parts                  = \explode('.', $section);
+            $parts                  = \explode('.', (string) $section);
 
             if (\count($parts) === 1) {
                 $this->data[$section] = $values;
@@ -93,6 +93,7 @@ class ConfigIni implements ConfigInterface
      * @throws FileIsNotExistException
      * @throws \ErrorException
      */
+    #[\Override]
     public function findValue(string $key, mixed $default = null): mixed
     {
         $this->load();
@@ -111,6 +112,7 @@ class ConfigIni implements ConfigInterface
      * @throws FileIsNotExistException
      * @throws \ErrorException
      */
+    #[\Override]
     public function findSection(string $section): array
     {
         $this->load();
@@ -129,6 +131,7 @@ class ConfigIni implements ConfigInterface
      * @throws FileIsNotExistException
      * @throws \ErrorException
      */
+    #[\Override]
     public function requireValue(string $key): mixed
     {
         $this->load();
@@ -147,6 +150,7 @@ class ConfigIni implements ConfigInterface
      * @throws FileIsNotExistException
      * @throws \ErrorException
      */
+    #[\Override]
     public function requireSection(string $section): array
     {
         $this->load();

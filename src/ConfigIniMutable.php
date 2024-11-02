@@ -30,6 +30,7 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
 
         $content                    = \implode(PHP_EOL, $this->build($this->data));
         $content                    = $this->afterBuild($content);
+
         $result                     = Safe::execute(fn() => \file_put_contents($this->file, $content));
 
         if (false === $result) {
@@ -98,7 +99,8 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
         } elseif (\is_numeric($value)) {
             return $value;
         }
-        return '"' . \addcslashes($value, '"') . '"';
+
+        return '"' . \addcslashes((string) $value, '"') . '"';
 
     }
 

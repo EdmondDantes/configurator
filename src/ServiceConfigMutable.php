@@ -7,6 +7,7 @@ namespace IfCastle\Configurator;
 use IfCastle\DI\Exceptions\ConfigException;
 use IfCastle\Exceptions\RuntimeException;
 use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
+use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionWriterInterface;
 
 class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollectionWriterInterface
@@ -19,12 +20,6 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     }
 
     /**
-     * @param string      $packageName
-     * @param string      $serviceName
-     * @param array       $serviceConfig
-     * @param bool        $isActive
-     * @param array|null  $includeTags
-     * @param array|null  $excludeTags
      * @param string|null $serviceSuffix *
      *
      * @throws RuntimeException
@@ -34,35 +29,39 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
      */
     #[\Override]
     public function addServiceConfig(string      $packageName,
-                                     string      $serviceName,
-                                     array       $serviceConfig,
-                                     bool        $isActive = true,
-                                     array|null  $includeTags = null,
-                                     array|null  $excludeTags = null,
-                                     string|null $serviceSuffix = null
-    ): void
-    {
-        if($this->isExists($serviceName, $serviceSuffix)) {
+        string      $serviceName,
+        array       $serviceConfig,
+        bool        $isActive = true,
+        array|null  $includeTags = null,
+        array|null  $excludeTags = null,
+        string|null $serviceSuffix = null
+    ): void {
+        if ($this->isLoaded === false) {
+            $this->load();
+            $this->normalizeDataAfterLoad();
+        }
+
+        if ($this->isExists($serviceName, $serviceSuffix)) {
             throw new \InvalidArgumentException("Service '$serviceName' already exists");
         }
-        
-        $serviceConfig[self::IS_ACTIVE]     = $isActive;
-        $serviceConfig[self::PACKAGE]       = $packageName;
-        $serviceConfig[self::NAME]          = $serviceName;
+
+        $serviceConfig[ServiceCollectionInterface::IS_ACTIVE]     = $isActive;
+        $serviceConfig[ServiceCollectionInterface::PACKAGE]       = $packageName;
+        $serviceConfig[ServiceCollectionInterface::NAME]          = $serviceName;
 
         if ($includeTags !== null) {
-            $serviceConfig[self::TAGS]      = $includeTags;
+            $serviceConfig[ServiceCollectionInterface::TAGS]      = $includeTags;
         }
 
         if ($excludeTags !== null) {
-            $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
+            $serviceConfig[ServiceCollectionInterface::EXCLUDE_TAGS] = $excludeTags;
         }
 
-        if($isActive) {
+        if ($isActive) {
             $conflicts              = $this->checkConflicts($serviceName, $includeTags);
-            
+
             if ($conflicts !== []) {
-                $serviceConfig[self::IS_ACTIVE] = false;
+                $serviceConfig[ServiceCollectionInterface::IS_ACTIVE] = false;
             }
         }
 
@@ -70,8 +69,6 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     }
 
     /**
-     * @param string $packageName
-     * @param string $serviceName
      *
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -80,34 +77,26 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     #[\Override]
     public function removeServiceConfig(string $packageName, string $serviceName): void
     {
-        $this->load();
-        
-        if(false === array_key_exists($serviceName, $this->data)) {
-            return;
+        if ($this->isLoaded === false) {
+            $this->load();
+            $this->normalizeDataAfterLoad();
         }
-        
-        $services                   = &$this->data[$serviceName];
-        
-        if (array_key_exists(self::NAME, $services) && $services[self::PACKAGE] === $packageName) {
-            unset($this->data[$serviceName]);
+
+        if (false === \array_key_exists($serviceName, $this->data)) {
             return;
         }
 
+        $services                   = &$this->data[$serviceName];
+
         foreach ($services as $suffix => $service) {
-            if ($service[self::PACKAGE] === $packageName) {
+            if ($service[ServiceCollectionInterface::PACKAGE] === $packageName) {
                 unset($services[$suffix]);
             }
         }
-        
+
         unset($services);
     }
-    
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws \ErrorException
-     * @throws ConfigException
-     */
+
     #[\Override]
     public function updateServiceConfig(
         string      $packageName,
@@ -117,46 +106,40 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
         array|null  $excludeTags = null,
         string|null $serviceSuffix = null
     ): void {
-        
+
         // First, we try to find the service configuration
         $services                   = $this->data[$serviceName] ?? null;
-        
+
         if ($services === null) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
-        
-        if (array_key_exists(self::NAME, $services)) {
-            $services               = [$services];
-        }
-        
+
         $service                    = null;
-        
+
         foreach ($services as $suffix => $config) {
-            if ($serviceSuffix === $suffix || ($serviceSuffix === null && $config[self::PACKAGE] === $packageName)) {
+            if ($serviceSuffix === $suffix
+                || ($serviceSuffix === null && $config[ServiceCollectionInterface::PACKAGE] === $packageName)) {
                 $service            = $config;
                 break;
             }
         }
-        
-        if($service === null) {
+
+        if ($service === null) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
-        
+
         if ($includeTags !== [] && $includeTags !== null) {
-            $serviceConfig[self::TAGS] = $includeTags;
+            $serviceConfig[ServiceCollectionInterface::TAGS] = $includeTags;
         }
 
         if ($excludeTags !== [] && $excludeTags !== null) {
-            $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
+            $serviceConfig[ServiceCollectionInterface::EXCLUDE_TAGS] = $excludeTags;
         }
 
-        $this->assignServiceConfig($serviceName, array_merge($service, $serviceConfig), $serviceSuffix);
+        $this->assignServiceConfig($serviceName, \array_merge($service, $serviceConfig), $serviceSuffix);
     }
 
     /**
-     * @param string $packageName
-     * @param string $serviceName
-     * @param string $serviceSuffix
      *
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -167,15 +150,15 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     public function activateService(string $packageName, string $serviceName, string $serviceSuffix): void
     {
         $serviceConfig              = &$this->findRefToServiceConfigByNameAndSuffix($serviceName, $serviceSuffix);
-        
-        if($serviceConfig === null) {
+
+        if ($serviceConfig === null) {
             throw new \InvalidArgumentException("Service '$serviceName.$serviceSuffix' is not found");
         }
 
         $serviceConfig[self::IS_ACTIVE] = true;
         unset($serviceConfig);
     }
-    
+
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -186,11 +169,11 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     public function deactivateService(string $packageName, string $serviceName, string $serviceSuffix): void
     {
         $serviceConfig              = &$this->findRefToServiceConfigByNameAndSuffix($serviceName, $serviceSuffix);
-        
-        if($serviceConfig === null) {
+
+        if ($serviceConfig === null) {
             throw new \InvalidArgumentException("Service '$serviceName.$serviceSuffix' is not found");
         }
-        
+
         $serviceConfig[self::IS_ACTIVE] = false;
         unset($serviceConfig);
     }
@@ -203,15 +186,14 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
      */
     #[\Override]
     public function changeServiceTags(string     $packageName,
-                                      string     $serviceName,
-                                      string     $serviceSuffix,
-                                      array|null $includeTags = null,
-                                      array|null $excludeTags = null
-    ): void
-    {
+        string     $serviceName,
+        string     $serviceSuffix,
+        array|null $includeTags = null,
+        array|null $excludeTags = null
+    ): void {
         $serviceConfig              = &$this->findRefToServiceConfigByNameAndSuffix($serviceName, $serviceSuffix);
-        
-        if($serviceConfig === null) {
+
+        if ($serviceConfig === null) {
             throw new \InvalidArgumentException("Service '$serviceName.$serviceSuffix' is not found");
         }
 
@@ -222,7 +204,7 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
         if ($excludeTags !== [] && $excludeTags !== null) {
             $serviceConfig[self::EXCLUDE_TAGS] = $excludeTags;
         }
-        
+
         unset($serviceConfig);
     }
 
@@ -231,7 +213,7 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     {
         $this->save();
     }
-    
+
     /**
      * @throws RuntimeException
      * @throws FileIsNotExistException
@@ -246,46 +228,46 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
         if ($services === null) {
             return $nullRef;
         }
-        
-        if (array_key_exists(self::NAME, $services)) {
+
+        if (\array_key_exists(self::NAME, $services)) {
             $services               = [$services];
         }
-        
-        if($services === []) {
+
+        if ($services === []) {
             return $nullRef;
         }
-        
+
         if ($serviceSuffix === null) {
-            return $services[array_key_first($services)];
+            return $services[\array_key_first($services)];
         }
-        
-        if(array_key_exists($serviceSuffix, $services)) {
+
+        if (\array_key_exists($serviceSuffix, $services)) {
             return $services[$serviceSuffix];
         }
-        
+
         return $nullRef;
     }
-    
+
     protected function isExists(string $serviceName, ?string $serviceSuffix = null): bool
     {
         $this->load();
         $services                   = $this->data[$serviceName] ?? null;
-        
+
         if ($services === null) {
             return false;
         }
-        
-        if (array_key_exists(self::NAME, $services)) {
+
+        if (\array_key_exists(self::NAME, $services)) {
             $services               = [$services];
         }
-        
+
         if ($serviceSuffix === null) {
             return true;
         }
-        
-        return array_key_exists($serviceSuffix, $services);
+
+        return \array_key_exists($serviceSuffix, $services);
     }
-    
+
     /**
      * The method checks that the new service to be added does not conflict
      * with already existing services of the same name,
@@ -293,61 +275,47 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
      *
      * This means that the active services' IncludeTags must not overlap.
      *
-     * @param string    $serviceName
      * @param string[]  $includeTags
      *
      * @return array<array{0: string, 1: string, 2: array<string>}>
      */
     protected function checkConflicts(string $serviceName, array $includeTags): array
     {
-        $this->load();
+        if ($this->isLoaded === false) {
+            $this->load();
+            $this->normalizeDataAfterLoad();
+        }
+
         $services                   = $this->data[$serviceName] ?? null;
-        
+
         if ($services === null) {
             return [];
         }
-        
-        if (array_key_exists(self::NAME, $services)) {
-            $services               = [$services];
-        }
-        
+
         $conflicts                  = [];
-        
+
         foreach ($services as $servicePrefix => $service) {
             $serviceIncludeTags     = $service[self::TAGS] ?? [];
-            $intersect              = array_intersect($includeTags, $serviceIncludeTags);
-            
+            $intersect              = \array_intersect($includeTags, $serviceIncludeTags);
+
             if ($intersect !== []) {
                 $conflicts[]        = [$service[self::PACKAGE], $servicePrefix, $intersect];
             }
         }
-        
+
         return $conflicts;
     }
-    
-    /**
-     * @throws RuntimeException
-     * @throws FileIsNotExistException
-     * @throws ConfigException
-     * @throws \ErrorException
-     */
-    protected function assignServiceConfig(string $serviceName, array $config, string $suffix = null): void
+
+    protected function assignServiceConfig(string $serviceName, array $config, ?string $suffix = null): void
     {
-        if(array_key_exists($serviceName, $this->data) && array_key_exists(self::NAME, $this->data[$serviceName])) {
-            $this->data[$serviceName] = [$this->data[$serviceName]];
+        if ($suffix === null) {
+            $this->data[$serviceName][] = $config;
+        } else {
+            $this->data[$serviceName][$suffix] = $config;
         }
-        
-        if(array_key_exists($serviceName, $this->data) && $suffix === null) {
-            $suffix                 = \count($this->data[$serviceName]);
-        }
-        
-        if($suffix !== null) {
-            $serviceName            .= $suffix;
-        }
-        
-        $this->set($serviceName, $config);
     }
-    
+
+    #[\Override]
     protected function afterBuild(string $content): string
     {
         $at                         = \date('Y-m-d H:i:s');
