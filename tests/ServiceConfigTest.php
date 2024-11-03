@@ -11,7 +11,7 @@ class ServiceConfigTest extends ServiceConfigTestCase
         $file                       = $this->appDir . '/services.ini';
 
         $config = <<<INI
-            [service1]
+            [service1.0]
             _service_name_ = 'service1'
             ; service configuration
             class = 'ServiceClass1'
@@ -21,7 +21,7 @@ class ServiceConfigTest extends ServiceConfigTestCase
             excludeTags[] = 'tag3'
             excludeTags[] = 'tag4'
 
-            [service2]
+            [service2.0]
             _service_name_ = 'service2'
             ; service configuration
             class = 'ServiceClass2'
