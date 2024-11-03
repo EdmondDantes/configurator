@@ -8,11 +8,12 @@ use IfCastle\Application\Bootloader\BootloaderExecutorInterface;
 use IfCastle\Application\Bootloader\BootloaderInterface;
 use IfCastle\Application\Bootloader\Builder\ZeroContextInterface;
 use IfCastle\Application\Bootloader\Builder\ZeroContextRequiredInterface;
+use IfCastle\DI\ConfigInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionWriterInterface;
 
-final class ConfigApplication extends ConfigIni implements ZeroContextRequiredInterface, BootloaderInterface
+final class Configurator extends ConfigIni implements ZeroContextRequiredInterface, BootloaderInterface
 {
     public function __construct()
     {
@@ -30,11 +31,13 @@ final class ConfigApplication extends ConfigIni implements ZeroContextRequiredIn
     public function buildBootloader(BootloaderExecutorInterface $bootloaderExecutor): void
     {
         $appDir                     = $bootloaderExecutor->getBootloaderContext()->getApplicationDirectory();
+        $builder                    = $bootloaderExecutor->getBootloaderContext()->getSystemEnvironmentBootBuilder();
 
-        $bootloaderExecutor->getBootloaderContext()->getSystemEnvironmentBootBuilder()
-            ->bindObject(
-                [RepositoryReaderInterface::class, ServiceCollectionInterface::class],
-                new ServiceConfig($appDir)
-            )->bindObject(ServiceCollectionWriterInterface::class, new ServiceConfigWriter($appDir));
+        $builder
+            ->bindObject(ConfigInterface::class, new ConfigMain($appDir), isThrow: false)
+            ->bindObject([RepositoryReaderInterface::class, ServiceCollectionInterface::class],
+                new ServiceConfig($appDir), isThrow: false
+            )
+            ->bindObject(ServiceCollectionWriterInterface::class, new ServiceConfigWriter($appDir), isThrow: false);
     }
 }
