@@ -45,6 +45,13 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
         return $content;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     * @throws RuntimeException
+     * @throws ConfigException
+     * @throws \ErrorException
+     */
     protected function build(array $data, string $parentKey = ''): array
     {
         static $isNestedArray       = static function (array $data): bool {

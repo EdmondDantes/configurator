@@ -13,6 +13,9 @@ class ConfigIni implements ConfigInterface
 {
     private bool $isLoaded          = false;
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $data           = [];
 
     public function __construct(protected string $file) {}

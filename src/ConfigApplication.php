@@ -8,9 +8,9 @@ use IfCastle\Application\Bootloader\BootloaderExecutorInterface;
 use IfCastle\Application\Bootloader\BootloaderInterface;
 use IfCastle\Application\Bootloader\Builder\ZeroContextInterface;
 use IfCastle\Application\Bootloader\Builder\ZeroContextRequiredInterface;
-use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderByTagsInterface;
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
-use IfCastle\ServiceManager\RepositoryStorages\RepositoryWriterInterface;
+use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
+use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionWriterInterface;
 
 final class ConfigApplication extends ConfigIni implements ZeroContextRequiredInterface, BootloaderInterface
 {
@@ -33,8 +33,8 @@ final class ConfigApplication extends ConfigIni implements ZeroContextRequiredIn
 
         $bootloaderExecutor->getBootloaderContext()->getSystemEnvironmentBootBuilder()
             ->bindObject(
-                [RepositoryReaderInterface::class, RepositoryReaderByTagsInterface::class],
+                [RepositoryReaderInterface::class, ServiceCollectionInterface::class],
                 new ServiceConfig($appDir)
-            )->bindObject(RepositoryWriterInterface::class, new ServiceConfigMutable($appDir));
+            )->bindObject(ServiceCollectionWriterInterface::class, new ServiceConfigWriter($appDir));
     }
 }

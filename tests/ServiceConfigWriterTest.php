@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace IfCastle\Configurator;
 
-class ServiceConfigMutableTest extends ServiceConfigTestCase
+class ServiceConfigWriterTest extends ServiceConfigTestCase
 {
     public function testAddServiceConfig(): void
     {
         $file                       = $this->appDir . '/services.ini';
-        $config                     = new ServiceConfigMutable($this->appDir);
+        $config                     = new ServiceConfigWriter($this->appDir);
 
         $config->addServiceConfig('package1', 'service1', ['value1' => 'value1'], true, ['tag1', 'tag2'], ['exclude1', 'exclude2']);
         $config->addServiceConfig('package1', 'service2', ['value2' => 'value2'], false, ['tag3', 'tag4'], ['exclude3', 'exclude4']);
@@ -60,7 +60,7 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
     public function testRemoveServiceConfig(): void
     {
         $file                       = $this->appDir . '/services.ini';
-        $config                     = new ServiceConfigMutable($this->appDir);
+        $config                     = new ServiceConfigWriter($this->appDir);
 
         $config->addServiceConfig(
             'package1',
@@ -112,7 +112,7 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
     public function testUpdateServiceConfig(): void
     {
         $file                       = $this->appDir . '/services.ini';
-        $config                     = new ServiceConfigMutable($this->appDir);
+        $config                     = new ServiceConfigWriter($this->appDir);
 
         $config->addServiceConfig(
             'package1',
@@ -162,7 +162,7 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
     public function testActivateService(): void
     {
         $file                       = $this->appDir . '/services.ini';
-        $config                     = new ServiceConfigMutable($this->appDir);
+        $config                     = new ServiceConfigWriter($this->appDir);
 
         $config->addServiceConfig(
             'package1',
@@ -205,7 +205,7 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
     public function testDeactivateService(): void
     {
         $file                       = $this->appDir . '/services.ini';
-        $config                     = new ServiceConfigMutable($this->appDir);
+        $config                     = new ServiceConfigWriter($this->appDir);
 
         $config->addServiceConfig(
             'package1',
@@ -248,7 +248,7 @@ class ServiceConfigMutableTest extends ServiceConfigTestCase
     public function testChangeServiceTags(): void
     {
         $file                       = $this->appDir . '/services.ini';
-        $config                     = new ServiceConfigMutable($this->appDir);
+        $config                     = new ServiceConfigWriter($this->appDir);
 
         $config->addServiceConfig(
             'package1',

@@ -10,7 +10,7 @@ use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionWriterInterface;
 
-class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollectionWriterInterface
+class ServiceConfigWriter extends ConfigIniMutable implements ServiceCollectionWriterInterface
 {
     use ServiceConfigReaderTrait;
 
@@ -233,6 +233,7 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
     }
 
     /**
+     * @return array<string, mixed>|null
      * @throws RuntimeException
      * @throws FileIsNotExistException
      * @throws \ErrorException
@@ -325,6 +326,9 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
         return $conflicts;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function assignServiceConfig(string $serviceName, array $config, ?string $suffix = null): void
     {
         if ($suffix === null) {
