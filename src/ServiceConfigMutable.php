@@ -114,19 +114,37 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
 
-        $service                    = null;
+        $foundedServices            = [];
+        $firstServiceSuffix         = null;
 
         foreach ($services as $suffix => $config) {
-            if ($serviceSuffix === $suffix
-                || ($serviceSuffix === null && $config[ServiceCollectionInterface::PACKAGE] === $packageName)) {
-                $service            = $config;
+
+            if ($serviceSuffix === null && $config[ServiceCollectionInterface::PACKAGE] === $packageName) {
+                $foundedServices[] = $config;
+
+                if ($firstServiceSuffix === null) {
+                    $firstServiceSuffix = (string) $suffix;
+                }
+
+            } elseif ($serviceSuffix === $suffix) {
+                $foundedServices[] = $config;
                 break;
             }
         }
 
-        if ($service === null) {
+        if ($foundedServices === []) {
             throw new \InvalidArgumentException("Service '$serviceName' is not found");
         }
+
+        if (\count($foundedServices) > 1) {
+            throw new \InvalidArgumentException("Service '$serviceName' has multiple configurations. Please specify the service suffix!");
+        }
+
+        if ($serviceSuffix === null) {
+            $serviceSuffix          = $firstServiceSuffix;
+        }
+
+        $service                    = $foundedServices[0];
 
         if ($includeTags !== [] && $includeTags !== null) {
             $serviceConfig[ServiceCollectionInterface::TAGS] = $includeTags;
@@ -221,17 +239,18 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
      */
     protected function &findRefToServiceConfigByNameAndSuffix(string $serviceName, ?string $serviceSuffix = null): array|null
     {
-        $this->load();
-        $services                   = $this->data[$serviceName] ?? null;
+        if ($this->isLoaded === false) {
+            $this->load();
+            $this->normalizeDataAfterLoad();
+        }
+
         $nullRef                    = null;
 
-        if ($services === null) {
+        if (\array_key_exists($serviceName, $this->data) === false) {
             return $nullRef;
         }
 
-        if (\array_key_exists(self::NAME, $services)) {
-            $services               = [$services];
-        }
+        $services                   = & $this->data[$serviceName];
 
         if ($services === []) {
             return $nullRef;
@@ -250,15 +269,15 @@ class ServiceConfigMutable extends ConfigIniMutable implements ServiceCollection
 
     protected function isExists(string $serviceName, ?string $serviceSuffix = null): bool
     {
-        $this->load();
-        $services                   = $this->data[$serviceName] ?? null;
-
-        if ($services === null) {
-            return false;
+        if ($this->isLoaded === false) {
+            $this->load();
+            $this->normalizeDataAfterLoad();
         }
 
-        if (\array_key_exists(self::NAME, $services)) {
-            $services               = [$services];
+        $services                   = $this->data[$serviceName] ?? null;
+
+        if ($services === null || $services === []) {
+            return false;
         }
 
         if ($serviceSuffix === null) {
