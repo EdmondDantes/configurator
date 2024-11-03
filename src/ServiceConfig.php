@@ -6,6 +6,7 @@ namespace IfCastle\Configurator;
 
 use IfCastle\ServiceManager\RepositoryStorages\RepositoryReaderInterface;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
+use IfCastle\ServiceManager\ServiceConfigReaderTrait;
 
 /**
  * Ini configuration reader|writer for services.

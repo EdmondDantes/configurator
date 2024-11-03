@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91fd54e9fa849587ef9c3e8bc1edfbc8",
+    "content-hash": "bbf3c8b69c1d3fa4f8364979a0fd1bac",
     "packages": [
         {
             "name": "ifcastle/application",
@@ -332,16 +332,16 @@
         },
         {
             "name": "ifcastle/service-manager",
-            "version": "v0.6.6",
+            "version": "v0.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EdmondDantes/service-manager.git",
-                "reference": "de158922d9f216877a1c99d382bf2d5f41cd73b4"
+                "reference": "50c6fb22fc8a258e573834ec8e452fdc4b3318fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/de158922d9f216877a1c99d382bf2d5f41cd73b4",
-                "reference": "de158922d9f216877a1c99d382bf2d5f41cd73b4",
+                "url": "https://api.github.com/repos/EdmondDantes/service-manager/zipball/50c6fb22fc8a258e573834ec8e452fdc4b3318fc",
+                "reference": "50c6fb22fc8a258e573834ec8e452fdc4b3318fc",
                 "shasum": ""
             },
             "require": {
@@ -373,9 +373,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EdmondDantes/service-manager/issues",
-                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.6.6"
+                "source": "https://github.com/EdmondDantes/service-manager/tree/v0.6.7"
             },
-            "time": "2024-11-02T16:58:43+00:00"
+            "time": "2024-11-03T12:05:07+00:00"
         },
         {
             "name": "ifcastle/type-definitions",

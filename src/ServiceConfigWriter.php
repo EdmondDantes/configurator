@@ -9,6 +9,7 @@ use IfCastle\Exceptions\RuntimeException;
 use IfCastle\OsUtilities\FileSystem\Exceptions\FileIsNotExistException;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionInterface;
 use IfCastle\ServiceManager\RepositoryStorages\ServiceCollectionWriterInterface;
+use IfCastle\ServiceManager\ServiceConfigReaderTrait;
 
 class ServiceConfigWriter extends ConfigIniMutable implements ServiceCollectionWriterInterface
 {
