@@ -38,7 +38,7 @@ class ConfigIni implements ConfigInterface
         }
 
         $data                       = Safe::execute(fn() => \parse_ini_file(
-            $this->file, true, \INI_SCANNER_TYPED)
+            $this->file, true, \INI_SCANNER_TYPED),
         );
 
         if ($data === false) {
@@ -165,5 +165,10 @@ class ConfigIni implements ConfigInterface
         }
 
         return $result;
+    }
+
+    protected function resetLoadedData(): void
+    {
+        $this->isLoaded             = false;
     }
 }

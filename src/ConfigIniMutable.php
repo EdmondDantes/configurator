@@ -217,7 +217,7 @@ class ConfigIniMutable extends ConfigIni implements ConfigMutableInterface
     public function reset(): static
     {
         $this->throwReadOnly();
-        $this->load();
+        $this->resetLoadedData();
 
         $this->wasModified          = true;
 
