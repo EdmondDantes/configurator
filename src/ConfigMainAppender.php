@@ -27,8 +27,8 @@ final class ConfigMainAppender extends ConfigIniMutable implements MainConfigApp
     public function appendSectionIfNotExists(string $section, array $data): void
     {
         $this->load();
-
-        $node                       = $this->referenceBy($section);
+        
+        $node                       = $this->find(...\explode('.', $section));
 
         if ($node !== null) {
             return;
